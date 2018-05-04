@@ -8,24 +8,12 @@ import getRandomPiece from '../utils/getRandomPiece';
 class Piece extends Component {
   componentDidMount() {
     console.log('Component Mounting');
-    // if (this.props.pieces.length === 0) {
-      this.initPiece();
-    // }
+    this.startMovement();
   }
 
-  initPiece = () => {
-    // if (this.props.pieces.length === 0) {
-      const piece = getRandomPiece();
-      const { pieces } = this.props;
-      pieces.push(piece);
-      this.props.updatePieces(pieces);
-      this.startMovement();
-    // } else {
-    // }
-  };
-
   startMovement = () => {
-    const { squares } = this.props;
+    const { pieces } = this.props;
+    const { moving, squares } = this.props.piece;
     // if the no square in a piece has touched the bottom
     const pieceFalling = setInterval(() => {
       // check if any squares are colliding with grid
@@ -37,16 +25,16 @@ class Piece extends Component {
       // })
       // console.log(pieceInBounds);
 
-      if (pieceInBounds) {
+      if (pieceInBounds && moving) {
         const movedSquares = squares.map(square => {
           square.y += 1;
           return square;
         });
-        this.setState({ squares: movedSquares });
         const { pieces, id } = this.props;
         pieces[id].squares = movedSquares;
         this.props.updatePieces(pieces);
       } else {
+        // if unit has hit bounds, create a new piece
         this.props.addNewPiece();
         clearInterval(pieceFalling);
       }
@@ -54,11 +42,11 @@ class Piece extends Component {
   };
 
   render() {
-    const { color } = this.props;
-    console.log(this.props.squares);
+    const { piece } = this.props;
+    const { squares, color } = piece;
     return (
       <Fragment>
-        {this.props.squares.map(square => (
+        {squares.map(square => (
           <div
             className="Piece"
             style={{

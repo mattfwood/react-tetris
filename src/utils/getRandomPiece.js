@@ -42,7 +42,7 @@ function getRandomPiece() {
   const pieceDetails = pieces[pieceList[randomPiece]];
   const pieceName = pieceList[randomPiece];
   // console.log(pieceDetails, pieceName);
-  return { name: pieceName, details: pieceDetails };
+  return { squares: pieceDetails.squares, color: pieceDetails.color, moving: true };
 }
 
 // console.log(getRandomPiece(pieces));
