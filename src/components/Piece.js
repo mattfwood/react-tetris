@@ -6,59 +6,59 @@ import getRandomPiece from '../utils/getRandomPiece';
 // Starting position is set in "getRandomPiece"
 // movement is triggered by increasing 'y' position of each square by 1 each second
 class Piece extends Component {
-  state = {
-    squares: [],
-    color: '',
-  };
-
   componentDidMount() {
     console.log('Component Mounting');
-    const { squares } = this.state;
-    // if squares hasn't been set been set
-    if (squares.length === 0) {
-      // get a random piece and set its position
+    // if (this.props.pieces.length === 0) {
       this.initPiece();
-    }
+    // }
   }
 
   initPiece = () => {
-    const piece = getRandomPiece();
-    console.log(piece);
-    this.setState(
-      {
-        squares: piece.details.squares,
-        color: piece.details.color,
-      },
-      () => this.startMovement()
-    );
+    // if (this.props.pieces.length === 0) {
+      const piece = getRandomPiece();
+      const { pieces } = this.props;
+      pieces.push(piece);
+      this.props.updatePieces(pieces);
+      this.startMovement();
+    // } else {
+    // }
   };
 
   startMovement = () => {
-    const { squares } = this.state;
-    console.log(squares);
+    const { squares } = this.props;
     // if the no square in a piece has touched the bottom
-    setInterval(() => {
+    const pieceFalling = setInterval(() => {
       // check if any squares are colliding with grid
-      const pieceNotColliding = !squares.some(square => square.y > 20);
-      // console.log(pieceNotColliding);
+      // check if piece has hit the ground
+      const pieceInBounds = !squares.some(square => square.y > 18);
+      // TODO: Make sure it checks for collision with other pieces
+      // const pieceNotColliding = pieces.any(piece => {
+      // piece.squares.any()
+      // })
+      // console.log(pieceInBounds);
 
-      if (pieceNotColliding) {
-        console.log(squares);
+      if (pieceInBounds) {
         const movedSquares = squares.map(square => {
           square.y += 1;
           return square;
         });
-        console.log(movedSquares);
         this.setState({ squares: movedSquares });
+        const { pieces, id } = this.props;
+        pieces[id].squares = movedSquares;
+        this.props.updatePieces(pieces);
+      } else {
+        this.props.addNewPiece();
+        clearInterval(pieceFalling);
       }
-    }, 1000);
+    }, 500);
   };
 
   render() {
-    const { squares, color } = this.state;
+    const { color } = this.props;
+    console.log(this.props.squares);
     return (
       <Fragment>
-        {squares.map(square => (
+        {this.props.squares.map(square => (
           <div
             className="Piece"
             style={{
