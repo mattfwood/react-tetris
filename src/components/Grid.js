@@ -5,14 +5,12 @@ class Grid extends Component {
     const { squares } = this.props;
     return (
       <Fragment>
-        {
-          squares.map(row => {
-            return row.map(square => {
-              const color = square.empty ? '' : 'square-filled'
-              return (<div className={`square ${color}`} />)
-            })
-          })
-        }
+        {squares.map(row => {
+          return row.map(square => {
+            const color = square.empty ? '' : 'square-filled';
+            return <div className={`square ${color}`} />;
+          });
+        })}
       </Fragment>
     );
   }
