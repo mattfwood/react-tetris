@@ -57,8 +57,9 @@ class Piece extends Component {
     const { squares, color } = piece;
     return (
       <Fragment>
-        {squares.map(square => (
+        {squares.map((square, index) => (
           <div
+            key={index}
             className="Piece"
             style={{
               top: `${square.y * 30}px`,

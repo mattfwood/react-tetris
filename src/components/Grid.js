@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class Grid extends Component {
   static propTypes = {
-    squares: PropTypes.arrayOf(PropTypes.object).isRequired,
+    squares: PropTypes.arrayOf(PropTypes.array).isRequired,
   }
 
   render() {
@@ -11,9 +11,9 @@ class Grid extends Component {
     return (
       <Fragment>
         {squares.map((row) => {
-          return row.map((square) => {
+          return row.map((square, index) => {
             const color = square.empty ? '' : 'square-filled';
-            return <div className={`square ${color}`} />;
+            return <div key={index} className={`square ${color}`} />;
           });
         })}
       </Fragment>

@@ -17,6 +17,7 @@
     "jsx-a11y/no-noninteractive-element-to-interactive-role": "off",
     "arrow-body-style": 0,
     "function-paren-newline": ["error", "multiline"],
-    "no-console": 0
+    "no-console": 0,
+    "react/no-array-index-key": 0
   }
 }
