@@ -12,15 +12,13 @@ import './App.css';
 
 class App extends Component {
   state = {
-    squares: Array.from({ length: 20 }, row =>
-      Array.from({ length: 10 }, column => ({ empty: true }))
-    ),
+    squares: Array.from({ length: 20 }, () => Array.from({ length: 10 }, () => ({ empty: true }))),
     pieces: [],
   };
 
   componentDidMount() {
     // CONTROLLER
-    window.addEventListener('keyup', event => {
+    window.addEventListener('keyup', (event) => {
       switch (event.code) {
         case 'ArrowUp':
           this.movePiece('up');
@@ -47,8 +45,9 @@ class App extends Component {
   addNewPiece = () => {
     // make all other pieces stop moving
     const pieces = this.state.pieces.map((piece) => {
-      piece.moving = false;
-      return piece;
+      const updatedPiece = piece;
+      updatedPiece.moving = false;
+      return updatedPiece;
     });
 
     // generate a new piece
@@ -64,7 +63,7 @@ class App extends Component {
     this.setState({ squares });
   };
 
-  updatePieces = pieces => {
+  updatePieces = (pieces) => {
     this.setState({ pieces });
   };
 
@@ -97,16 +96,18 @@ class App extends Component {
 
       case 'left':
         currentPiece.squares = currentPiece.squares.map((square) => {
-          square.x -= 1;
-          return square;
+          const movedSquare = square;
+          movedSquare.x -= 1;
+          return movedSquare;
         });
         // pieces[currentPieceIndex].squares.position.x -= 1
         break;
 
       case 'right':
         currentPiece.squares = currentPiece.squares.map((square) => {
-          square.x += 1;
-          return square;
+          const movedSquare = square;
+          movedSquare.x += 1;
+          return movedSquare;
         });
         // pieces[currentPieceIndex].squares.position.x += 1
         break;
@@ -128,10 +129,10 @@ class App extends Component {
     // } else {
     //   console.log('movement blocked: piece out of bounds');
     // }
-  }
+  };
 
   render() {
-    const { squares, pieces, updatePieces } = this.state;
+    const { squares, pieces } = this.state;
     if (pieces.length === 0) {
       this.addNewPiece();
     }

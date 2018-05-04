@@ -1,18 +1,28 @@
 import React, { Component, Fragment } from 'react';
-
-import getRandomPiece from '../utils/getRandomPiece';
+import PropTypes from 'prop-types';
 
 // Pieces are made up of 4 squares
 // Starting position is set in "getRandomPiece"
 // movement is triggered by increasing 'y' position of each square by 1 each second
 class Piece extends Component {
+  static propTypes = {
+    piece: PropTypes.shape({
+      squares: PropTypes.array.isRequired,
+      color: PropTypes.string.isRequired,
+      moving: PropTypes.bool.isRequired,
+    }).isRequired,
+    id: PropTypes.number.isRequired,
+    updatePieces: PropTypes.func.isRequired,
+    pieces: PropTypes.arrayOf(PropTypes.object).isRequired,
+    addNewPiece: PropTypes.func.isRequired,
+  }
+
   componentDidMount() {
     console.log('Component Mounting');
     this.startMovement();
   }
 
   startMovement = () => {
-    const { pieces } = this.props;
     const { moving, squares } = this.props.piece;
     // if the no square in a piece has touched the bottom
     const pieceFalling = setInterval(() => {
@@ -26,9 +36,10 @@ class Piece extends Component {
       // console.log(pieceInBounds);
 
       if (pieceInBounds && moving) {
-        const movedSquares = squares.map(square => {
-          square.y += 1;
-          return square;
+        const movedSquares = squares.map((square) => {
+          const updatedSquare = square;
+          updatedSquare.y += 1;
+          return updatedSquare;
         });
         const { pieces, id } = this.props;
         pieces[id].squares = movedSquares;
